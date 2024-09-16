@@ -3,9 +3,9 @@ import './App.css';
   
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
   
-import LandingPage from "./pages/LandingPage";
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
+import LandingPage from "./Pages/LandingPage";
+import LoginPage from './Pages/LoginPage'
+import RegisterPage from './Pages/RegisterPage'
  
 function App() {
   return (
