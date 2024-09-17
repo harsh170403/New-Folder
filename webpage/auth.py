@@ -1,10 +1,13 @@
-from flask import Blueprint, jsonify, request, flash, redirect
-from .forms import LoginForm, SignUpForm, PasswordChangeForm
+from flask import Blueprint, jsonify, request
+from flask_login import login_user, login_required, logout_user
 from .models import Customer
 from . import db
-from flask_login import login_user, login_required, logout_user
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask_cors import CORS
 
 auth = Blueprint('auth', __name__)
+CORS(auth, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
 
 @auth.route('/api/sign-up', methods=['POST'])
 def sign_up():
@@ -14,18 +17,27 @@ def sign_up():
     password1 = data.get('password1')
     password2 = data.get('password2')
 
-    if password1 == password2:
-        new_customer = Customer(email=email, username=username, password=password2)
+    if not (email and username and password1 and password2):
+        return jsonify({'error': 'Missing required fields'}), 400
 
-        try:
-            db.session.add(new_customer)
-            db.session.commit()
-            return jsonify({'message': 'Account Created Successfully, You can now Login'}), 201
-        except Exception as e:
-            return jsonify({'error': 'Account Not Created!!, Email already exists'}), 400
-    else:
+    if password1 != password2:
         return jsonify({'error': 'Passwords do not match!'}), 400
 
+    # Check if email already exists
+    existing_customer = Customer.query.filter_by(email=email).first()
+    if existing_customer:
+        return jsonify({'error': 'Email already exists'}), 400
+
+    hashed_password = generate_password_hash(password1)
+    new_customer = Customer(email=email, username=username, password=hashed_password)
+    
+    try:
+        db.session.add(new_customer)
+        db.session.commit()
+        return jsonify({'message': 'Account Created Successfully, You can now Login'}), 201
+    except Exception as e:
+        db.session.rollback()  # Ensure rollback on error
+        return jsonify({'error': 'Account Not Created!'}), 500
 
 @auth.route('/api/login', methods=['POST'])
 def login():
@@ -33,21 +45,21 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
-    customer = Customer.query.filter_by(email=email).first()
+    if not (email and password):
+        return jsonify({'error': 'Email and password are required'}), 400
 
-    if customer and customer.verify_password(password):
+    customer = Customer.query.filter_by(email=email).first()
+    if customer and check_password_hash(customer.password, password):
         login_user(customer)
         return jsonify({'message': 'Login Successful'}), 200
     else:
         return jsonify({'error': 'Incorrect Email or Password'}), 400
-
 
 @auth.route('/api/logout', methods=['POST'])
 @login_required
 def log_out():
     logout_user()
     return jsonify({'message': 'Logged out successfully'}), 200
-
 
 @auth.route('/api/profile/<int:customer_id>', methods=['GET'])
 @login_required
@@ -61,7 +73,6 @@ def profile(customer_id):
     else:
         return jsonify({'error': 'Customer not found'}), 404
 
-
 @auth.route('/api/change-password/<int:customer_id>', methods=['POST'])
 @login_required
 def change_password(customer_id):
@@ -70,11 +81,13 @@ def change_password(customer_id):
     new_password = data.get('new_password')
     confirm_new_password = data.get('confirm_new_password')
 
-    customer = Customer.query.get(customer_id)
+    if not (current_password and new_password and confirm_new_password):
+        return jsonify({'error': 'Missing required fields'}), 400
 
-    if customer.verify_password(current_password):
+    customer = Customer.query.get(customer_id)
+    if customer and check_password_hash(customer.password, current_password):
         if new_password == confirm_new_password:
-            customer.password = confirm_new_password
+            customer.password = generate_password_hash(new_password)
             db.session.commit()
             return jsonify({'message': 'Password Updated Successfully'}), 200
         else:
