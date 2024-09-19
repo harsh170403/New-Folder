@@ -8,12 +8,10 @@ import os
 
 admin = Blueprint('admin', __name__)
 
-# Serve images
 @admin.route('/media/<path:filename>')
 def get_image(filename):
     return send_from_directory('media', filename)
 
-# Add shop items
 @admin.route('/api/add-shop-items', methods=['POST'])
 @login_required
 def add_shop_items():
