@@ -5,7 +5,6 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState({ email: '', username: '' });
 
   useEffect(() => {
-   
     const userId = 1; 
     axios.get(`/api/profile/${userId}`)
       .then(response => setProfile(response.data))

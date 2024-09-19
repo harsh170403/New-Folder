@@ -14,8 +14,7 @@ const ChangePasswordPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-   
-    const userId = 1;
+    const userId = 1; 
     axios.post(`/api/change-password/${userId}`, form)
       .then(response => alert(response.data.message))
       .catch(error => console.error('Error changing password:', error));
