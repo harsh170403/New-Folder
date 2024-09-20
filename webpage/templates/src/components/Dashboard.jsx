@@ -23,10 +23,11 @@ const Dashboard = () => {
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-blue-600 text-white p-4 shadow-lg">
                 <div className="container mx-auto flex justify-between">
+                    <h1 className="text-lg font-semibold">My Dashboard</h1>
                     <div>
-                        <h1 className="text-lg font-semibold">My Dashboard</h1>
-                    </div>
-                    <div>
+                        <Link to="/" className="px-4 py-2 mx-2 hover:bg-blue-700">Home</Link>
+                        <Link to="/profile" className="px-4 py-2 mx-2 hover:bg-blue-700">Profile</Link>
+                        <Link to="/settings" className="px-4 py-2 mx-2 hover:bg-blue-700">Settings</Link>
                         <Link to="/login" className="px-4 py-2 mx-2 bg-blue-500 rounded hover:bg-blue-700">Login</Link>
                         <Link to="/sign-up" className="px-4 py-2 mx-2 bg-green-500 rounded hover:bg-green-700">Sign Up</Link>
                     </div>

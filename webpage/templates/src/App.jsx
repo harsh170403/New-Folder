@@ -8,7 +8,6 @@ import ProfilePage from './components/ProfilePage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import SearchPage from './components/SearchPage';
 import Dashboard from './components/Dashboard';
-import Admin from './components/Admin';
 
 function App() {
   return (
@@ -22,7 +21,6 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/Admin" element={<Admin/>}></Route>
       </Routes>
     </Router>
   );
