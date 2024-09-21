@@ -5,8 +5,8 @@ function Sidebar() {
     const [status,setStatus]=useState(false)
   return (
     <div>
-        <div className='flex justify-between p-5'>
-            <div className='ml-5'>
+        <div className='flex justify-between '>
+            <div className='ml-10'>
                 <a href=''>Amazon</a>
             </div>
             <div>
@@ -17,7 +17,7 @@ function Sidebar() {
                  <li><a href=''>profile</a></li>
                  <li><a href=''>add items</a></li>
                 </ul>
-                <AiOutlineBars className='left-1 absolute top-5 cursor-pointer' size={ '25px'} onClick={()=>setStatus(true)}/>
+                <AiOutlineBars className='left-1 absolute top-12 cursor-pointer' size={ '25px'} onClick={()=>setStatus(true)}/>
             </div>
         </div>
         {
