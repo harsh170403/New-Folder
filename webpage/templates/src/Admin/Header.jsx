@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { IoIosSearch } from "react-icons/io";
 import { FaGlobe } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 
 const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const [showModal, setShowModal] = useState(false);
@@ -10,6 +11,7 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const [selectedAddress, setSelectedAddress] = useState(addresses[0]); 
   const [selectedCategory, setSelectedCategory] = useState("All"); 
   const [searchQuery, setSearchQuery] = useState("");
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
   const categories = ["All", "Electronics", "Books", "Clothing", "Home & Kitchen", "Toys", "Beauty", "Sports"];
 
@@ -40,23 +42,22 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
     }
   };
 
-
   const handleEditAddress = (index) => {
     setNewAddress(addresses[index]);
     setEditIndex(index);
     toggleModal();
   };
 
-  
   const handleSelectAddress = (address) => {
     setSelectedAddress(address);
     toggleModal();
   };
 
-  
   const handleSearch = () => {
     console.log(`Searching for "${searchQuery}" in category "${selectedCategory}"`);
   };
+
+  const toggleProfileDropdown = () => setShowProfileDropdown(!showProfileDropdown);
 
   return (
     <div>
@@ -73,11 +74,11 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
         </div>
 
         <div className='flex items-center group'>
-          <div className='flex h-10 md:h-10 md:ml-5 md:pl-5 bg-white text-black hover:border-2 border border-gray-300 rounded-l group-focus-within:border-blue-500'>
+          <div className='flex h-10 md:h-10 md:ml-5 bg-white text-black hover:border-2 border border-gray-300 rounded-l group-focus-within:border-blue-500'>
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-gray-200 px-2 text-sm border-none outline-none rounded-l"
+              className="bg-gray-200 px-2 w-14 text-sm border-none outline-none rounded-l"
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
@@ -91,7 +92,7 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="bg-transparent outline-none px-4 w-52 md:w-96 lg:w-[500px] text-black"
+              className="bg-transparent outline-none px-4 w-52 md:w-52 lg:w-[500px] text-black"
             />
           </div>
           <button
@@ -112,6 +113,45 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
               <option value="DE">DE</option>
               <option value="HI">HI</option>
             </select>
+          </div>
+
+          <div className="relative">
+            <button
+              className="flex items-center ml-4 text-white"
+              onClick={toggleProfileDropdown}
+            >
+              <FaUserCircle className="text-xl mr-1" />
+              <span className="text-sm">Manage Profile</span>
+            </button>
+
+            {showProfileDropdown && (
+              <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-10">
+                <div className="p-4 border-b">
+                  <h3 className="font-bold mb-2">Your List</h3>
+                  <ul>
+                    <li><a href="/wishlist" className="hover:text-blue-600">Wish List</a></li>
+                    <li><a href="/orders" className="hover:text-blue-600">Order History</a></li>
+                  </ul>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-bold mb-2">Your Account</h3>
+                  <ul>
+                    <li><a href="/profile" className="hover:text-blue-600">Profile Settings</a></li>
+                    <li><a href="/logout" className="hover:text-blue-600">Logout</a></li>
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="ml-4">
+            <a
+              href="/orders"
+              className="flex flex-col text-white hover:text-yellow-500"
+            >
+              <span className="text-xs">Returns</span>
+              <span className="font-bold">Orders</span>
+            </a>
           </div>
         </div>
       </div>
