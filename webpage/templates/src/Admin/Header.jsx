@@ -65,7 +65,7 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
     <div>
       <div className='bg-gray-900 items-center text-white py-3 flex justify-between h-14'>
         <div className='flex items-center'>
-          <a href="/" className="flex items-center ml-4">
+          <a href="/admin" className="flex items-center ml-4">
             <img src="/image/Screenshot from 2024-09-21 12-18-11.png" alt="amazon" className="h-8" />
           </a>
 
@@ -193,6 +193,7 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
         </div>
       </div>
 
+      {/* Address Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-md w-96">
@@ -204,18 +205,43 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
               placeholder="Enter your address"
               className="border p-2 w-full mb-4"
             />
-            <button
-              onClick={handleSaveAddress}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              Save Address
-            </button>
-            <button
-              onClick={toggleModal}
-              className="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
-            >
-              Cancel
-            </button>
+            <div className="flex justify-between">
+              <button onClick={handleSaveAddress} className="bg-blue-500 text-white px-4 py-2 rounded">
+                Save
+              </button>
+              <button onClick={toggleModal} className="bg-gray-500 text-white px-4 py-2 rounded">
+                Cancel
+              </button>
+            </div>
+
+            <h3 className="text-lg font-bold mt-6">Manage Addresses</h3>
+            <ul className="mt-2">
+              {addresses.map((address, index) => (
+                <li key={index} className="flex justify-between items-center my-2">
+                  <span>{address}</span>
+                  <div className="flex">
+                    <button
+                      onClick={() => handleEditAddress(index)}
+                      className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleRemoveAddress(index)}
+                      className="bg-red-500 text-white px-2 py-1 rounded mr-2"
+                    >
+                      Remove
+                    </button>
+                    <button
+                      onClick={() => handleSelectAddress(address)}
+                      className="bg-green-500 text-white px-2 py-1 rounded"
+                    >
+                      Select
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
