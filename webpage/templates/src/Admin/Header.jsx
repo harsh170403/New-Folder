@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { IoIosSearch } from "react-icons/io";
-import { FaGlobe } from "react-icons/fa";
-import { FaUserCircle } from "react-icons/fa";
+import { FaGlobe, FaUserCircle, FaShoppingCart } from "react-icons/fa"; 
 
 const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const [showModal, setShowModal] = useState(false);
@@ -12,6 +11,8 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const [selectedCategory, setSelectedCategory] = useState("All"); 
   const [searchQuery, setSearchQuery] = useState("");
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [cartItems, setCartItems] = useState([]); 
+  const [showCartDropdown, setShowCartDropdown] = useState(false);
 
   const categories = ["All", "Electronics", "Books", "Clothing", "Home & Kitchen", "Toys", "Beauty", "Sports"];
 
@@ -33,7 +34,6 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
     toggleModal();
   };
 
-  
   const handleRemoveAddress = (index) => {
     const updatedAddresses = addresses.filter((_, i) => i !== index);
     setAddresses(updatedAddresses);
@@ -58,6 +58,8 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
   };
 
   const toggleProfileDropdown = () => setShowProfileDropdown(!showProfileDropdown);
+
+  const toggleCartDropdown = () => setShowCartDropdown(!showCartDropdown);
 
   return (
     <div>
@@ -92,14 +94,14 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="bg-transparent outline-none px-4 w-52 md:w-52 lg:w-[500px] text-black"
+              className="bg-transparent outline-none px-4 w-52 md:w-52 lg:w-[700px] text-black"
             />
           </div>
           <button
             onClick={handleSearch}
             className="w-[40px] md:w-[60px] h-10 flex items-center justify-center bg-yellow-500 text-black rounded-r"
           >
-            <IoIosSearch className='text-2xl' />
+            <IoIosSearch className='text-2xl size-8' />
           </button>
         </div>
 
@@ -153,6 +155,41 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
               <span className="font-bold">Orders</span>
             </a>
           </div>
+
+          <div className="relative ml-4">
+            <button
+              className="flex items-center text-white"
+              onClick={toggleCartDropdown}
+            >
+              <FaShoppingCart className="text-xl mr-1" />
+              <span className="text-sm">Cart ({cartItems.length})</span>
+            </button>
+
+            {showCartDropdown && (
+              <div className="absolute right-0 mt-2 w-64 bg-white text-black rounded-md shadow-lg z-10">
+                <div className="p-4 border-b">
+                  <h3 className="font-bold mb-2">Shopping Cart</h3>
+                  {cartItems.length === 0 ? (
+                    <p>Your cart is empty.</p>
+                  ) : (
+                    <ul>
+                      {cartItems.map((item, index) => (
+                        <li key={index} className="flex justify-between my-2">
+                          <span>{item.name}</span>
+                          <span>{item.quantity}x</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="p-4">
+                  <a href="/cart" className="bg-blue-500 text-white px-4 py-2 rounded block text-center">
+                    View Cart
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -167,43 +204,18 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
               placeholder="Enter your address"
               className="border p-2 w-full mb-4"
             />
-            <div className="flex justify-between">
-              <button onClick={handleSaveAddress} className="bg-blue-500 text-white px-4 py-2 rounded">
-                Save
-              </button>
-              <button onClick={toggleModal} className="bg-gray-500 text-white px-4 py-2 rounded">
-                Cancel
-              </button>
-            </div>
-
-            <h3 className="text-lg font-bold mt-6">Manage Addresses</h3>
-            <ul className="mt-2">
-              {addresses.map((address, index) => (
-                <li key={index} className="flex justify-between items-center my-2">
-                  <span>{address}</span>
-                  <div className="flex">
-                    <button
-                      onClick={() => handleEditAddress(index)}
-                      className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleRemoveAddress(index)}
-                      className="bg-red-500 text-white px-2 py-1 rounded mr-2"
-                    >
-                      Remove
-                    </button>
-                    <button
-                      onClick={() => handleSelectAddress(address)}
-                      className="bg-green-500 text-white px-2 py-1 rounded"
-                    >
-                      Select
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <button
+              onClick={handleSaveAddress}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            >
+              Save Address
+            </button>
+            <button
+              onClick={toggleModal}
+              className="bg-red-500 text-white px-4 py-2 rounded-md ml-2"
+            >
+              Cancel
+            </button>
           </div>
         </div>
       )}
