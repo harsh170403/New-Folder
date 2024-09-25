@@ -6,6 +6,9 @@ import './App.css';
 import Header from './Admin/Header';
 import Sidebar from './Admin/Sidebar';
 import Home from './Admin/Home';
+import User_header from './user_dashboard/User_header';
+import User_sidebar from './user_dashboard/User_home';
+import User_home from './user_dashboard/User_sidebar';
 import CartPage from './components/CartPage';
 import OrdersPage from './components/OrdersPage';
 import SignUp from './components/SignUp';
@@ -13,7 +16,6 @@ import Login from './components/Login';
 import ProfilePage from './components/ProfilePage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import SearchPage from './components/SearchPage';
-import Dashboard from './components/Dashboard';
 
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -35,8 +37,17 @@ function App() {
             </div>
           }
         />
+        <Route
+          path="/"
+          element={
+            <div className="grid-container">
+              <User_header OpenSidebar={OpenSidebar} />
+              <User_sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <User_home />
+            </div>
+          }
+        />
         
-        <Route path="/" element={<Dashboard />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/sign-up" element={<SignUp />} />
