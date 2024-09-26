@@ -4,7 +4,7 @@ import { FaGlobe, FaUserCircle, FaShoppingCart } from "react-icons/fa";
 
 const User_header = ({ sidebarToggle, setSidebarToggle }) => {
   const [showModal, setShowModal] = useState(false);
-  const [addresses, setAddresses] = useState(["123 Main St, New York, NY"]);
+  const [addresses, setAddresses] = useState(["address"]);
   const [newAddress, setNewAddress] = useState("");
   const [editIndex, setEditIndex] = useState(null);
   const [selectedAddress, setSelectedAddress] = useState(addresses[0]); 
