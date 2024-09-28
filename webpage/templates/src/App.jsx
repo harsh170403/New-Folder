@@ -6,9 +6,13 @@ import './App.css';
 import Header from './Admin/Header';
 import Sidebar from './Admin/Sidebar';
 import Home from './Admin/Home';
+import OrdersCustomersManager from './Admin/OrdersCustomersManager'; // Import OrdersCustomersManager
+import ShopItemsManager from './Admin/ShopItemsManager'; // Import ShopItemsManager
+
+// User Components
 import User_header from './user_dashboard/User_header';
-import User_sidebar from './user_dashboard/User_home';
-import User_home from './user_dashboard/User_sidebar';
+import User_sidebar from './user_dashboard/User_sidebar';
+import User_home from './user_dashboard/User_home';
 import CartPage from './components/CartPage';
 import OrdersPage from './components/OrdersPage';
 import SignUp from './components/SignUp';
@@ -27,6 +31,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        {/* Admin Routes */}
         <Route
           path="/admin"
           element={
@@ -38,6 +43,28 @@ function App() {
           }
         />
         <Route
+          path="/admin/orders-customers"
+          element={
+            <div className="grid-container">
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <OrdersCustomersManager />
+            </div>
+          }
+        />
+        <Route
+          path="/admin/shop-items"
+          element={
+            <div className="grid-container">
+              <Header OpenSidebar={OpenSidebar} />
+              <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
+              <ShopItemsManager />
+            </div>
+          }
+        />
+
+        {/* User Routes */}
+        <Route
           path="/"
           element={
             <div className="grid-container">
@@ -47,7 +74,6 @@ function App() {
             </div>
           }
         />
-        
         <Route path="/cart" element={<CartPage />} />
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/sign-up" element={<SignUp />} />
