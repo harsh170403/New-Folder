@@ -2,12 +2,10 @@ from flask import Blueprint, jsonify, request
 from flask_login import login_user, login_required, logout_user
 from .models import Customer
 from . import db
-from werkzeug.security import check_password_hash, generate_password_hash
 from flask_cors import CORS
 
 auth = Blueprint('auth', __name__)
 CORS(auth, resources={r"/api/*": {"origins": "http://localhost:5173"}})
-
 
 @auth.route('/api/sign-up', methods=['POST'])
 def sign_up():
@@ -23,22 +21,20 @@ def sign_up():
     if password1 != password2:
         return jsonify({'error': 'Passwords do not match!'}), 400
 
-    # Check if email already exists
     existing_customer = Customer.query.filter_by(email=email).first()
     if existing_customer:
         return jsonify({'error': 'Email already exists'}), 400
 
-    hashed_password = generate_password_hash(password1)
-    new_customer = Customer(email=email, username=username, password=hashed_password)
+    new_customer = Customer(email=email, username=username, password=password1)
     
     try:
         db.session.add(new_customer)
         db.session.commit()
         return jsonify({'message': 'Account Created Successfully, You can now Login'}), 201
     except Exception as e:
-        db.session.rollback()  # Ensure rollback on error
+        db.session.rollback()
         return jsonify({'error': 'Account Not Created!'}), 500
-
+    
 @auth.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -49,7 +45,7 @@ def login():
         return jsonify({'error': 'Email and password are required'}), 400
 
     customer = Customer.query.filter_by(email=email).first()
-    if customer and check_password_hash(customer.password, password):
+    if customer and customer.verify_password(password): 
         login_user(customer)
         return jsonify({'message': 'Login Successful'}), 200
     else:
@@ -85,9 +81,9 @@ def change_password(customer_id):
         return jsonify({'error': 'Missing required fields'}), 400
 
     customer = Customer.query.get(customer_id)
-    if customer and check_password_hash(customer.password, current_password):
+    if customer and customer.check_password(current_password): 
         if new_password == confirm_new_password:
-            customer.password = generate_password_hash(new_password)
+            customer.password = new_password  
             db.session.commit()
             return jsonify({'message': 'Password Updated Successfully'}), 200
         else:

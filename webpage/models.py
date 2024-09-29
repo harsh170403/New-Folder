@@ -6,13 +6,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class Customer(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), unique=True)
-    username = db.Column(db.String(100))
-    password_hash = db.Column(db.String(150))
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    username = db.Column(db.String(100), nullable=False)
+    password_hash = db.Column(db.String(150), nullable=False)
     date_joined = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    cart_items = db.relationship('Cart', backref=db.backref('customer', lazy=True))
-    orders = db.relationship('Order', backref=db.backref('customer', lazy=True))
+    cart_items = db.relationship('Cart', backref='customer', lazy=True)
+    orders = db.relationship('Order', backref='customer', lazy=True)
 
     @property
     def password(self):
@@ -23,10 +23,10 @@ class Customer(db.Model, UserMixin):
         self.password_hash = generate_password_hash(password=password)
 
     def verify_password(self, password):
-        return check_password_hash(self.password_hash, password=password)
+        return check_password_hash(self.password_hash, password)
 
-    def __str__(self):
-        return '<Customer %r>' % Customer.id
+    def __repr__(self):
+        return f'<Customer {self.username}>'
 
 
 class Product(db.Model):
@@ -39,11 +39,11 @@ class Product(db.Model):
     flash_sale = db.Column(db.Boolean, default=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
 
-    carts = db.relationship('Cart', backref=db.backref('product', lazy=True))
-    orders = db.relationship('Order', backref=db.backref('product', lazy=True))
+    carts = db.relationship('Cart', backref='product', lazy=True)
+    orders = db.relationship('Order', backref='product', lazy=True)
 
-    def __str__(self):
-        return '<Product %r>' % self.product_name
+    def __repr__(self):
+        return f'<Product {self.product_name}>'
 
 
 class Cart(db.Model):
@@ -53,10 +53,8 @@ class Cart(db.Model):
     customer_link = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     product_link = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
 
-    # customer product
-
-    def __str__(self):
-        return '<Cart %r>' % self.id
+    def __repr__(self):
+        return f'<Cart {self.id}>'
 
 
 class Order(db.Model):
@@ -69,17 +67,5 @@ class Order(db.Model):
     customer_link = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     product_link = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)
 
-    # customer
-
-    def __str__(self):
-        return '<Order %r>' % self.id
-
-
-
-
-
-
-
-
-
-
+    def __repr__(self):
+        return f'<Order {self.id}>'
