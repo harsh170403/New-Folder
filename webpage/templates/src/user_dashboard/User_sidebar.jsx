@@ -26,19 +26,55 @@ function User_sidebar() {
 
     return (
         <div>
-            <div className='flex justify-between'>
-                <div className='ml-10'></div>
-                <div>
-                    <ul className='hidden md:flex space-x-5 bg-gray-700 text-white h-8'>
-                        <li><a href='/'>Home</a></li>
-                        <li><a href='/about'>About us</a></li>
-                        <li><a href='/contact'>Contact us</a></li>
-                        <li><a href='/profile'>Profile</a></li>
-                        <li><a href='/add-items'>Add Items</a></li>
-                    </ul>
-                    <AiOutlineBars className='left-4 absolute top-14 cursor-pointer' size={'25px'} onClick={() => setStatus(true)} />
-                </div>
-            </div>
+          <div className="flex  gap-1 bg-gray-700 text-white h-10">
+          <div
+    className="flex items-center ml-5 group hover:border hover:border-white hover:rounded p-2 cursor-pointer"
+    onClick={() => setStatus(true)}
+>
+    <AiOutlineBars
+        className="group-hover:text-white"
+        size="25px"
+    />
+    <a
+        href="/all"
+        className="ml-2 group-hover:text-white"
+        onClick={(e) => e.preventDefault()} // Prevent navigation
+    >
+        All
+    </a>
+</div>
+
+    <div className="w-full">
+        <ul className="flex gap-1  items-center w-full h-full ">
+            {[
+                { href: "/fresh", label: "Fresh" },
+                { href: "/keep-shopping-for", label: "Keep Shopping For" },
+                { href: "/flights", label: "Flights" },
+                { href: "/lists", label: "Lists" },
+                { href: "/new-releases", label: "New Releases" },
+                { href: "/mx-player", label: "MX Player" },
+                { href: "/sell", label: "Sell" },
+                { href: "/gift-cards", label: "Gift Cards" },
+                { href: "/buy-again", label: "Buy Again" },
+                { href: "/browsing-history", label: "Browsing History" },
+                { href: "/amazon-pay", label: "Amazon Pay" },
+            ].map((item, index) => (
+                <li key={index}>
+                    <a
+                        href={item.href}
+                        className="hover:border hover:border-white hover:rounded p-2"
+                    >
+                        {item.label}
+                    </a>
+                </li>
+            ))}
+        </ul>
+    </div>
+</div>
+
+    
+
+
 
             {status ? (
                 <div className='bg-black/70 absolute w-full h-screen flex top-0'>

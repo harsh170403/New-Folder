@@ -49,7 +49,8 @@ function Sidebar() {
                     />
 
                     <div className='z-10 bg-white w-[360px] h-screen overflow-y-auto'>
-                        <div className='bg-gray-700 h-14'>
+                        <div className='bg-gray-7
+                        00 h-14'>
                             {isLoggedIn ? (
                                 <div>
                                     <p className="font-bold text-lg text-white justify-center top-10 ml-14 pt-2">Welcome, {userName}</p>
