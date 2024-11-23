@@ -71,7 +71,7 @@ const Carousel = () => {
       <div
         className="h-[100%]"
         style={{
-          background: `linear-gradient(to bottom, ${gradientColor}, rgba(255, 255, 255, 0.6))`,
+          background: `linear-gradient(to bottom, ${gradientColor}, rgba(255, 255, 255, 1))`,
         }}
       />
     </div>

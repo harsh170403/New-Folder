@@ -45,7 +45,7 @@ function User_sidebar() {
 </div>
 
     <div className="w-full">
-        <ul className="flex gap-1  items-center w-full h-full ">
+        <ul className="flex gap-1  items-center w-full h-full  ">
             {[
                 { href: "/fresh", label: "Fresh" },
                 { href: "/keep-shopping-for", label: "Keep Shopping For" },
@@ -84,7 +84,7 @@ function User_sidebar() {
                         onClick={() => setStatus(false)} 
                     />
 
-                    <div className='z-10 bg-white w-[360px] h-screen overflow-y-auto'>
+                    <div className='z-20 bg-white w-[360px] h-screen overflow-y-auto'>
                         <div className='bg-gray-700 h-14'>
                             {isLoggedIn ? (
                                 <div>
