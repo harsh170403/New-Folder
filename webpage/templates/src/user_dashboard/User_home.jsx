@@ -1,12 +1,28 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import "swiper/css";
 import "swiper/css/navigation";
 
+const HomePageCard = ({ title, img, link }) => {
+  return (
+    <div className="h-[420px] bg-white z-30 m-3">
+      <div className="text-lg xl:text-xl font-semibold ml-4 mt-4">{title}</div>
+      <div className="h-[300px] m-4">
+        <img
+          className="h-[100%] w-[100%] object-cover"
+          src={img}
+          alt="Home card"
+        />
+      </div>
+      <div className="text-xs xl:text-sm text-blue-400 ml-4">{link}</div>
+    </div>
+  );
+};
+
 const Carousel = () => {
-  const [gradientColor, setGradientColor] = useState("rgb(0, 0, 0)"); 
+  const [gradientColor, setGradientColor] = useState("rgb(0, 0, 0)");
   const canvasRef = useRef(null);
 
   const getDominantColor = (image) => {
@@ -33,7 +49,7 @@ const Carousel = () => {
 
   return (
     <div className="h-[600px] bg-white relative">
-      <canvas ref={canvasRef} style={{ display: "none" }} /> 
+      <canvas ref={canvasRef} style={{ display: "none" }} />
 
       <Swiper
         loop={true}
@@ -47,32 +63,98 @@ const Carousel = () => {
         className="h-[50%]"
       >
         <SwiperSlide>
-          <img src={"public/image/carousel_1.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_1.jpg"} alt="Carousel" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={"public/image/carousel_2.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_2.jpg"} alt="Carousel" />
         </SwiperSlide>
         <SwiperSlide className="bg-black">
           <video controls muted="muted">
-            <source src={"public/image/carousel_vid.mp4"} type="video/mp4" />
+            <source src={"/image/carousel_vid.mp4"} type="video/mp4" />
           </video>
         </SwiperSlide>
         <SwiperSlide>
-          <img src={"public/image/carousel_4.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_4.jpg"} alt="Carousel" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={"public/image/carousel_5.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_5.jpg"} alt="Carousel" />
         </SwiperSlide>
       </Swiper>
 
       <div
         className="h-[70%]"
         style={{
-          background: `linear-gradient(to bottom, ${gradientColor}, rgba(255, 255, 255, 0.6))`, 
+          background: `linear-gradient(to bottom, ${gradientColor}, rgba(255, 255, 255, 0.6))`,
         }}
       />
     </div>
   );
 };
 
-export default Carousel;
+const HomePage = () => {
+  return (
+    <div className="bg-amazonclone-background">
+      <div className="min-w-[1000px] max-w-[1500px] m-auto">
+        <Carousel />
+        <div className="grid grid-cols-3 xl:grid-cols-4 -mt-80">
+          <HomePageCard
+            title={"We have a surprise for you"}
+            img={"/image/home_grid_1.jpg"}
+            link={"See terms and conditions"}
+          />
+          <HomePageCard
+            title={"Watch The Rings of Power"}
+            img={"/image/home_grid_2.jpg"}
+            link={"Start streaming now"}
+          />
+          <HomePageCard
+            title={"Unlimited Streaming"}
+            img={"/image/home_grid_3.jpg"}
+            link={"Find out more"}
+          />
+          <HomePageCard
+            title={"More titles to explore"}
+            img={"/image/home_grid_4.jpg"}
+            link={"Browse Kindle Unlimited"}
+          />
+          <HomePageCard
+            title={"Shop Pet Supplies"}
+            img={"/image/home_grid_5.jpg"}
+            link={"See more"}
+          />
+          <HomePageCard
+            title={"Spring Sale"}
+            img={"/image/home_grid_6.jpg"}
+            link={"See the deals"}
+          />
+          <HomePageCard
+            title={"Echo Buds"}
+            img={"/image/home_grid_7.jpg"}
+            link={"See more"}
+          />
+          <HomePageCard
+            title={"Family Plan: 3 months free"}
+            img={"/image/home_grid_8.jpg"}
+            link={"Learn more"}
+          />
+          <div className="m-3 pt-8">
+            <img
+              className="xl:hidden"
+              src={"/image/banner_image_2.jpg"}
+              alt="Banner 2"
+            />
+          </div>
+        </div>
+        <div className="h-[200px]">
+          <img
+            className="h-[100%] m-auto"
+            src={"/image/banner_image.jpg"}
+            alt="Banner 1"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HomePage;

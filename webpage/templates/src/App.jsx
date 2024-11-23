@@ -20,6 +20,7 @@ import Login from './components/Login';
 import ProfilePage from './components/ProfilePage';
 import ChangePasswordPage from './components/ChangePasswordPage';
 import SearchPage from './components/SearchPage';
+import HomePageCard from './components/HomePageCard';
 
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -74,6 +75,7 @@ function App() {
             </div>
           }
         />
+        
         <Route path="/cart" element={<CartPage />} />
         <Route path="/orders" element={<OrdersPage />} />
         <Route path="/sign-up" element={<SignUp />} />
@@ -81,6 +83,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/search" element={<SearchPage />} />
+        
       </Routes>
     </Router>
   );
