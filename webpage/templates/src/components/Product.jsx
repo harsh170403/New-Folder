@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules"; // Updated for Swiper v10+
+import { Navigation } from "swiper/modules"; 
 import { Link } from "react-router-dom";
 
 import "swiper/css";
@@ -13,7 +13,7 @@ const Product = () => {
         slidesPerView={7}
         spaceBetween={10}
         navigation={true}
-        modules={[Navigation]} // Correctly use Navigation module
+        modules={[Navigation]} 
       >
         {Array.from({ length: 9 }, (_, i) => (
           <SwiperSlide key={i}>
