@@ -2,6 +2,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useRef, useState } from "react";
 import HomePageCard from '../components/HomePageCard';
+import Category from '../components/Category';
+import Product from '../components/Product';
+
 
 
 import "swiper/css";
@@ -139,6 +142,9 @@ const HomePage = () => {
             alt="Banner 1"
           />
         </div>
+        <Product/>
+        <Category/>
+
       </div>
     </div>
   );
