@@ -1,23 +1,23 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useRef, useState } from "react";
-import HomePageCard from '../components/HomePageCard';
-import Category from '../components/Category';
-import Product from '../components/Product';
-
-
+import HomePageCard from "../components/HomePageCard";
+import Category from "../components/Category";
+import Product from "../components/Product";
 
 import "swiper/css";
 import "swiper/css/navigation";
-
 
 const Carousel = () => {
   const [gradientColor, setGradientColor] = useState("rgb(0, 0, 0)");
   const canvasRef = useRef(null);
 
+  // Get the dominant color from the image
   const getDominantColor = (image) => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    if (!canvas) return "rgb(0, 0, 0)"; // Default color if canvas is null
+
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
     canvas.width = 1;
     canvas.height = 1;
 
@@ -27,18 +27,26 @@ const Carousel = () => {
     return `rgb(${r}, ${g}, ${b})`;
   };
 
+  // Update gradient when the active slide changes
   const updateGradient = (swiper) => {
+    if (!swiper || !swiper.slides || !swiper.slides[swiper.activeIndex]) {
+      return; // Guard clause if swiper or the active slide is undefined
+    }
+
     const activeSlide = swiper.slides[swiper.activeIndex];
     const image = activeSlide.querySelector("img");
 
     if (image) {
       const dominantColor = getDominantColor(image);
       setGradientColor(dominantColor);
+    } else {
+      setGradientColor("rgb(0, 0, 0)"); // Default color for slides without images
     }
   };
 
   return (
     <div className="h-[600px] bg-white relative">
+      {/* Hidden canvas for processing colors */}
       <canvas ref={canvasRef} style={{ display: "none" }} />
 
       <Swiper
@@ -46,31 +54,33 @@ const Carousel = () => {
         spaceBetween={0}
         navigation={true}
         modules={[Navigation, Autoplay]}
-        autoplay={{
-          delay: 4500,
+        autoplay={{ delay: 4500 }}
+        onSlideChange={(swiper) => {
+          // Adding delay to ensure the slide change is fully completed before processing
+          setTimeout(() => updateGradient(swiper), 500);
         }}
-        onSlideChange={(swiper) => updateGradient(swiper)}
         className="h-[50%]"
       >
         <SwiperSlide>
-          <img src={"/image/carousel_1.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_1.jpg"} alt="Carousel 1" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={"/image/carousel_2.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_2.jpg"} alt="Carousel 2" />
         </SwiperSlide>
         <SwiperSlide className="bg-black">
-          <video controls muted="muted">
+          <video controls muted>
             <source src={"/image/carousel_vid.mp4"} type="video/mp4" />
           </video>
         </SwiperSlide>
         <SwiperSlide>
-          <img src={"/image/carousel_4.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_4.jpg"} alt="Carousel 4" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={"/image/carousel_5.jpg"} alt="Carousel" />
+          <img src={"/image/carousel_5.jpg"} alt="Carousel 5" />
         </SwiperSlide>
       </Swiper>
 
+      {/* Gradient background overlay */}
       <div
         className="h-[100%]"
         style={{
@@ -135,8 +145,8 @@ const HomePage = () => {
             />
           </div>
         </div>
-        <Product/>
-        <Category/>
+        <Product />
+        <Category />
 
         <div className="h-[200px]">
           <img
@@ -145,7 +155,6 @@ const HomePage = () => {
             alt="Banner 1"
           />
         </div>
-
       </div>
     </div>
   );

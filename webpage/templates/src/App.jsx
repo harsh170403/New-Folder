@@ -86,6 +86,11 @@ function App() {
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/HomePageCard" element={< HomePageCard/>} />
+
+
+
 
         
       </Routes>

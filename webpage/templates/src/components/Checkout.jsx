@@ -1,7 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { ProductDetails } from "./";
+import  ProductDetails  from "./ProductDetails";
 import { GB_CURRENCY } from "../utils/constants";
+import User_header from '../user_dashboard/User_header';
+import User_sidebar from '../user_dashboard/User_sidebar';
+
 import {
   removeFromCart,
   decrementInCart,
@@ -20,7 +23,11 @@ const Checkout = () => {
   const dispatch = useDispatch();
 
   return (
+    
+
     <div className="h-screen bg-amazonclone-background">
+      <User_header/>
+      <User_sidebar/>
       <div className="min-w-[1000px] max-w-[1500px] m-auto pt-8">
         <div className="grid grid-cols-8 gap-10">
           <div className="col-span-6 bg-white">
