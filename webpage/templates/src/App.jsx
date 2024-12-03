@@ -23,6 +23,8 @@ import SearchPage from './components/SearchPage';
 import HomePageCard from './components/HomePageCard';
 import Product from './components/Product';
 import ProductPage from './components/ProductPage';
+import PaymentForm from "./components/PaymentForm";
+
 
 function App() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -88,6 +90,7 @@ function App() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/product" element={<Product />} />
         <Route path="/HomePageCard" element={< HomePageCard/>} />
+        <Route path="/Payment" element={< PaymentForm/>} />
 
 
 
