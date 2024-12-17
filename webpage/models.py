@@ -56,13 +56,12 @@ class Cart(db.Model):
     def __repr__(self):
         return f'<Cart {self.id}>'
 
-
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    quantity = db.Column(db.Integer, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(100), nullable=False)
-    payment_id = db.Column(db.String(1000), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    total_amount = db.Column(db.Integer, nullable=False)
+    payment_intent_id = db.Column(db.String(100), nullable=True)
+    status = db.Column(db.String(20), default="pending")
 
     customer_link = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     product_link = db.Column(db.Integer, db.ForeignKey('product.id'), nullable=False)

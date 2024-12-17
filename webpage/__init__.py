@@ -2,13 +2,19 @@ from flask import Flask, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import os
+import stripe
+from dotenv import load_dotenv
+
+load_dotenv()
 
 db = SQLAlchemy()
 DB_NAME = 'database.sqlite3'
 
+
 def create_database():
     db.create_all()
     print('Database Created')
+
 
 def create_app():
     app = Flask(__name__, static_folder='frontend/build', static_url_path='')
@@ -17,6 +23,8 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
 
     db.init_app(app)
+
+    stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -27,7 +35,6 @@ def create_app():
         from .models import Customer
         return Customer.query.get(int(id))
 
-    # Register Blueprints
     from .views import views
     from .auth import auth
     from .admin import admin
@@ -37,7 +44,6 @@ def create_app():
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/')
 
-    # Serve React frontend
     @app.route('/')
     @app.route('/<path:path>')
     def serve_react_app(path=None):
@@ -49,7 +55,6 @@ def create_app():
     def page_not_found(error):
         return jsonify({'error': 'Not found'}), 404
 
-    # Create database if not exists
     with app.app_context():
         create_database()
 

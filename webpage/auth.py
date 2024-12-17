@@ -1,8 +1,12 @@
 from flask import Blueprint, jsonify, request
 from flask_login import login_user, login_required, logout_user
-from .models import Customer
+from .models import Customer, Order
 from . import db
 from flask_cors import CORS
+import stripe
+import os
+
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 auth = Blueprint('auth', __name__)
 CORS(auth, resources={r"/api/*": {"origins": "http://localhost:5173"}})
@@ -34,7 +38,7 @@ def sign_up():
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': 'Account Not Created!'}), 500
-    
+
 @auth.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -90,3 +94,38 @@ def change_password(customer_id):
             return jsonify({'error': 'New Passwords do not match'}), 400
     else:
         return jsonify({'error': 'Current Password is Incorrect'}), 400
+
+@auth.route("/api/create-payment-intent", methods=["POST"])
+def create_payment_intent():
+    try:
+        data = request.json
+        total_amount = data["amount"]
+        user_id = data["user_id"]
+
+        intent = stripe.PaymentIntent.create(
+            amount=total_amount,
+            currency="usd",
+        )
+
+        order = Order(
+            user_id=user_id,
+            total_amount=total_amount,
+            payment_intent_id=intent["id"],
+            status="pending",
+        )
+        db.session.add(order)
+        db.session.commit()
+
+        return jsonify({"clientSecret": intent["client_secret"]})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 403
+
+@auth.route("/publishable-key", methods=["GET"])
+def get_publishable_key():
+    try:
+        publishable_key = os.getenv("STRIPE_PUBLISHABLE_KEY")
+        if not publishable_key:
+            raise ValueError("Publishable key not found in environment variables.")
+        return jsonify({"publishableKey": publishable_key})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400

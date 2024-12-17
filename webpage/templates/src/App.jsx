@@ -2,19 +2,17 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 
-// Component Imports
 import Header from './Admin/Header';
 import Sidebar from './Admin/Sidebar';
 import Home from './Admin/Home';
-import OrdersCustomersManager from './Admin/OrdersCustomersManager'; // Import OrdersCustomersManager
-import ShopItemsManager from './Admin/ShopItemsManager'; // Import ShopItemsManager
+import OrdersCustomersManager from './Admin/OrdersCustomersManager'; 
+import ShopItemsManager from './Admin/ShopItemsManager'; 
 
-// User Components
 import User_header from './user_dashboard/User_header';
 import User_sidebar from './user_dashboard/User_sidebar';
 import User_home from './user_dashboard/User_home';
 import CartPage from './components/CartPage';
-import OrdersPage from './components/OrdersPage';
+import OrderConfirmation from './components/OrderConfirmation';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import ProfilePage from './components/ProfilePage';
@@ -23,7 +21,7 @@ import SearchPage from './components/SearchPage';
 import HomePageCard from './components/HomePageCard';
 import Product from './components/Product';
 import ProductPage from './components/ProductPage';
-import PaymentForm from "./components/PaymentForm";
+import Payment from "./components/Payment";
 
 
 function App() {
@@ -36,7 +34,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Admin Routes */}
         <Route
           path="/admin"
           element={
@@ -68,7 +65,6 @@ function App() {
           }
         />
 
-        {/* User Routes */}
         <Route
           path="/"
           element={
@@ -81,7 +77,7 @@ function App() {
         />
         
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<ProfilePage />} />
@@ -90,8 +86,7 @@ function App() {
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/product" element={<Product />} />
         <Route path="/HomePageCard" element={< HomePageCard/>} />
-        <Route path="/Payment" element={< PaymentForm/>} />
-
+        <Route path="/Payment" element={<Payment totalAmount={5000} userId="12345" />} />
 
 
 
